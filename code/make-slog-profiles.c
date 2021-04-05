@@ -54,6 +54,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <lcms2.h>
+#include <math.h>
+#include <stdbool.h>
 #include "make-elles-profiles.h"
 
 int main ()
@@ -161,8 +163,6 @@ for ( i = 0; i < 6; i++ ) {
     else if (i==5) trc="-rec709";
     V4_profile = make_V4_profile (whitepoint, primaries, trc, basename, id, 
                               extension, copyright, manufacturer);
-    make_V2_profile (V4_profile, media_whitepoint, media_blackpoint, 
-                 trc, basename, id, extension, copyright, manufacturer);
     }
 
 /* ***** Make profile: ACES, D60, gamma=1.00 */
@@ -208,8 +208,6 @@ for ( i = 0; i < 6; i++ ) {
       }
     V4_profile = make_V4_profile (whitepoint, primaries, trc, basename, id, 
                               extension, copyright, manufacturer);
-    make_V2_profile (V4_profile, media_whitepoint, media_blackpoint, 
-                 trc, basename, id, extension, copyright, manufacturer);
     }
 
 
@@ -257,8 +255,6 @@ for ( i = 0; i < 6; i++ ) {
     else if (i==5) trc="-rec709";
     V4_profile = make_V4_profile (whitepoint, primaries, trc, basename, id, 
                               extension, copyright, manufacturer);
-    make_V2_profile (V4_profile, media_whitepoint, media_blackpoint, 
-                 trc, basename, id, extension, copyright, manufacturer);
     }
 
 
@@ -285,10 +281,62 @@ for ( i = 0; i < 6; i++ ) {
     else if (i==5) trc="-rec709";
     V4_profile = make_V4_profile (whitepoint, primaries, trc, basename, id, 
                               extension, copyright, manufacturer);
-    make_V2_profile (V4_profile, media_whitepoint, media_blackpoint, 
-                 trc, basename, id, extension, copyright, manufacturer);
     }
 
+/* ***** Make profile: S-Gamut, D65, gamma=1.00. */
+/* These primaries are those used for Sony's S-Gamut/S-Gamut3 colorspace.*/
+cmsCIExyYTRIPLE sgamut_primaries = {/*  */
+{0.73, 0.28, 1.0},
+{0.14, 0.855, 1.0},
+{0.1, -0.05, 1.0}
+};
+primaries = sgamut_primaries;
+whitepoint = d65_srgb_adobe_specs;
+media_whitepoint = d65_media_whitepoint;
+basename = "SGamut";
+manufacturer = "Sony";
+//ModelDesc = "";
+
+for ( i = 0; i < 7; i++ ) {
+    if (i==0) trc="-g10";
+    else if (i==1) trc="-srgbtrc";
+    else if (i==2) trc="-slog2legal";
+    else if (i==3) trc="-slog2data";
+    else if (i==4) trc="-slog3legal";
+    else if (i==5) trc="-slog3data";
+    else if (i==6) trc="-rec709";
+
+
+    V4_profile = make_V4_profile (whitepoint, primaries, trc, basename, id, 
+      extension, copyright, manufacturer);
+    }
+
+/* ***** Make profile: S-Gamut, D65, gamma=1.00. */
+/* These primaries are those used for Sony's S-Gamut/S-Gamut3 colorspace.*/
+cmsCIExyYTRIPLE sgamutcine_primaries = {/*  */
+{0.766, 0.275, 1.0},
+{0.225, 0.8, 1.0},
+{0.089, -0.087, 1.0}
+};
+primaries = sgamutcine_primaries;
+whitepoint = d65_srgb_adobe_specs;
+media_whitepoint = d65_media_whitepoint;
+basename = "SGamut3_cine";
+manufacturer = "Sony";
+//ModelDesc = "";
+
+for ( i = 0; i < 7; i++ ) {
+    if (i==0) trc="-g10";
+    else if (i==1) trc="-srgbtrc";
+    else if (i==2) trc="-slog2legal";
+    else if (i==3) trc="-slog2data";
+    else if (i==4) trc="-slog3legal";
+    else if (i==5) trc="-slog3data";
+    else if (i==6) trc="-rec709";
+
+    V4_profile = make_V4_profile (whitepoint, primaries, trc, basename, id, 
+      extension, copyright, manufacturer);
+    }
 
 /* ***** Make profile: Romm/Prophoto, D50, gamma=1.80 */
 /* Reference Input/Output Medium Metric RGB Color Encodings (RIMM/ROMM RGB)
@@ -325,8 +373,6 @@ for ( i = 0; i < 6; i++ ) {
     else if (i==5) trc="-rec709";
     V4_profile = make_V4_profile (whitepoint, primaries, trc, basename, id, 
                               extension, copyright, manufacturer);
-    make_V2_profile (V4_profile, media_whitepoint, media_blackpoint, 
-                 trc, basename, id, extension, copyright, manufacturer);
     }
 
 
@@ -385,8 +431,6 @@ for ( i = 0; i < 6; i++ ) {
     else if (i==5) trc="-rec709";
     V4_profile = make_V4_profile (whitepoint, primaries, trc, basename, id, 
                               extension, copyright, manufacturer);
-    make_V2_profile (V4_profile, media_whitepoint, media_blackpoint, 
-                 trc, basename, id, extension, copyright, manufacturer);
     }
 
 
@@ -428,8 +472,6 @@ for ( i = 0; i < 6; i++ ) {
     else if (i==5) trc="-rec709";
     V4_profile = make_V4_profile (whitepoint, primaries, trc, basename, id, 
                               extension, copyright, manufacturer);
-    make_V2_profile (V4_profile, media_whitepoint, media_blackpoint, 
-                 trc, basename, id, extension, copyright, manufacturer);
     }
 
 
@@ -473,8 +515,6 @@ for ( i = 0; i < 6; i++ ) {
       }
     V4_profile = make_V4_profile (whitepoint, primaries, trc, basename, id, 
                               extension, copyright, manufacturer);
-    make_V2_profile (V4_profile, media_whitepoint, media_blackpoint, 
-                 trc, basename, id, extension, copyright, manufacturer);
     }
 
 
@@ -529,8 +569,6 @@ for ( i = 0; i < 6; i++ ) {
     else if (i==5) trc="-rec709";
     V4_profile = make_V4_profile (whitepoint, primaries, trc, basename, id, 
                               extension, copyright, manufacturer);
-    make_V2_profile (V4_profile, media_whitepoint, media_blackpoint, 
-                 trc, basename, id, extension, copyright, manufacturer);
     }
 
 
@@ -671,6 +709,77 @@ static cmsToneCurve* make_tonecurve (char * trc)
   cmsBuildParametricToneCurve(NULL, 4, rec709_parameters);
   }
 
+  /*
+    Tone curve type 8 is of the form
+    ab^(cX+d) + e
+
+    For S-Log2, the formula is:
+    Y = Power(10.0, ((t - 0.616596 - 0.03) / 0.432699)) - 0.037584
+
+    so a = 1
+    b = 10.0
+    c = 0.432699*(1023/876)
+    d = -(0.616596 + 0.03 + 64/876)/0.432699
+    e = -0.037584
+
+    Plus some additional math with the offsets because in that formula, t is defined
+    for legal range data, e.g. for 10-bit, 1.09 = 1023, 1.0 = 940, 0.0 = 64,
+    so we need to further scale/offset things..
+
+    specifically t = x*(1023/876) - 64/876, derived from Sony's example for 10-bit (0-1023) code mapping of:
+    y = (Power(10.0, ((((z / 4.0 - 16.0) / 219.0) - 0.616596 - 0.03) / 0.432699)) - 0.037584) 
+
+    (z/4-16)/219 = (z-64)/876
+
+    where z = x*1023
+  */
+
+
+  else if (strcmp( trc, "-slog2data") == 0) {
+      //0.03*255 = 7.64, round up to 8 because that seems to be what sony is doing
+      const cmsFloat64Number slog_offset = 0.03;
+      //const cmsFloat64Number slog_offset = 8.0/255.0;
+      const cmsFloat64Number slog_scale = 0.432699;
+      cmsFloat64Number slog2_parameters[5] = 
+	  { 0.1,  10.0, 1.0/slog_scale, -(0.616596 + slog_offset)/slog_scale, -0.037584*0.1 };
+      tonecurve = 
+	  cmsBuildParametricToneCurve(NULL, 8, slog2_parameters);
+  }
+
+  else if (strcmp( trc, "-slog2legal") == 0) {
+      //0.03*255 = 7.64, round up to 8 because that seems to be what sony is doing
+      const cmsFloat64Number slog_offset = 64.0/876.0 + 0.03;
+      //const cmsFloat64Number slog_offset = 8.0/255.0;
+      const cmsFloat64Number slog_scale = 0.432699;
+      cmsFloat64Number slog2_parameters[5] = 
+	  { 0.1,  10.0, (1023.0/876.0)/slog_scale, -(0.616596 + slog_offset)/slog_scale, -0.037584*0.1 };
+      tonecurve = 
+	  cmsBuildParametricToneCurve(NULL, 8, slog2_parameters);
+  }
+
+  else if ((strcmp( trc, "-slog3legal") == 0) || (strcmp( trc, "-slog3data") == 0)) {
+      cmsFloat32Number slog3_table[4096];
+      int j;
+      cmsFloat32Number in;
+      cmsFloat32Number maxj = 1.0;
+      bool dataconv = false;
+      if(strcmp( trc, "-slog3data") == 0)
+	  dataconv = true;
+      for(j=4095; j >= 0; j--) {
+	  in = ((cmsFloat32Number) j)/4095.0;
+	  if(dataconv)
+	      in = in*(876.0/1023.0) + 64.0/1023.0;
+	  if(in >= 171.2102946929 / 1023.0)
+	      slog3_table[j] = powf(10.0,((in * 1023.0 - 420.0) / 261.5)) * (0.18 + 0.01) - 0.01;
+	  else
+	      slog3_table[j] = (in * 1023.0 - 95.0) * 0.01125000 / (171.2102946929 - 95.0);
+	  if(j == 4095)
+	      maxj = slog3_table[j];
+	  slog3_table[j] /= maxj;
+      }
+      tonecurve = cmsBuildTabulatedToneCurveFloat(NULL, 4096, slog3_table);
+  }
+
   else if (strcmp( trc, "-labl") == 0) {
   cmsFloat64Number labl_parameters[5] = 
   { 3.0, 1.0 / 1.16,  0.16 / 1.16, 2700.0 / 24389.0, 0.08000 };
@@ -678,89 +787,8 @@ static cmsToneCurve* make_tonecurve (char * trc)
   cmsBuildParametricToneCurve(NULL, 4, labl_parameters);
   }
 
+  
   return tonecurve;
-}
-
-
-static cmsHPROFILE make_V2_profile (cmsHPROFILE  V4_profile,
-                                    cmsCIEXYZ    media_whitepoint,
-                                    cmsCIEXYZ    media_blackpoint,
-                                    char *          trc,
-                                    char *          basename,
-                                    char *          id,
-                                    char *          extension,
-                                    cmsMLU          *copyright,
-                                    char *          manufacturer
-                                    )
-{
-/* Open sample V2 profile */
-char *sample_profile_filename;
-sample_profile_filename = "sampleV2.icm";
-
-if (strcmp(trc, "-srgbtrc") == 0 ) sample_profile_filename = "sampleV2srgb.icm";
-if (strcmp(trc, "-labl") == 0 )    sample_profile_filename = "sampleV2labl.icm";
-if (strcmp(trc, "-rec709") == 0 )  sample_profile_filename = "sampleV2rec709.icm";
-
-cmsHPROFILE sampleV2 = cmsOpenProfileFromFile(sample_profile_filename, "r");
-
-char *profile_version="-V2";
-char *filename;
-cmsHPROFILE V2_profile = sampleV2;
-cmsSetProfileVersion (V2_profile, 2.2);
-cmsSetDeviceClass (V2_profile, cmsSigDisplayClass);
-cmsSetPCS (V2_profile, cmsSigXYZData);
-cmsWriteTag (V2_profile, cmsSigMediaWhitePointTag, &media_whitepoint);
-cmsWriteTag (V2_profile, cmsSigMediaBlackPointTag, &media_blackpoint);
-
-/* Get and set the colorants */
-cmsCIEXYZ  *red = cmsReadTag(V4_profile, cmsSigRedColorantTag); 
-cmsCIEXYZ red_tag = *red;
-cmsWriteTag (V2_profile, cmsSigRedColorantTag, &red_tag);
-
-cmsCIEXYZ  *green = cmsReadTag(V4_profile, cmsSigGreenColorantTag); 
-cmsCIEXYZ green_tag = *green;
-cmsWriteTag (V2_profile, cmsSigGreenColorantTag, &green_tag);
-
-cmsCIEXYZ  *blue = cmsReadTag(V4_profile, cmsSigBlueColorantTag); 
-cmsCIEXYZ blue_tag = *blue;
-cmsWriteTag (V2_profile, cmsSigBlueColorantTag, &blue_tag);
-
-/* Get and set the TRCs */
-
-if ( (strcmp( trc, "-g10") == 0) || 
-     (strcmp( trc, "-g18") == 0) || 
-     (strcmp( trc, "-g22") == 0) )
-{
-cmsToneCurve  *red_trc = cmsReadTag(V4_profile, cmsSigRedTRCTag);
-cmsWriteTag (V2_profile, cmsSigRedTRCTag, red_trc);
-
-cmsToneCurve  *green_trc = cmsReadTag(V4_profile, cmsSigGreenTRCTag);
-cmsWriteTag (V2_profile, cmsSigGreenTRCTag, green_trc);
-
-cmsToneCurve  *blue_trc = cmsReadTag(V4_profile, cmsSigBlueTRCTag); 
-cmsWriteTag (V2_profile, cmsSigBlueTRCTag, blue_trc);
-}
-
-/* Set copyright, manufacturer, and ModelDesc tags */
-cmsWriteTag(V2_profile, cmsSigCopyrightTag, copyright);
-
-cmsMLU *MfgDesc;
-MfgDesc   = cmsMLUalloc(NULL, 1);
-cmsMLUsetASCII(MfgDesc, "en", "US", manufacturer);
-cmsWriteTag(V2_profile, cmsSigDeviceMfgDescTag, MfgDesc);
-
-/* Set filename and description */
-filename = make_file_name (basename, id, profile_version, trc, extension);
-char *description_text = filename + 12;
-cmsMLU *description;
-description = cmsMLUalloc(NULL, 1);
-cmsMLUsetASCII(description, "en", "US", description_text);
-cmsWriteTag(V2_profile, cmsSigProfileDescriptionTag, description);
-cmsSaveProfileToFile(V2_profile, filename);
-cmsMLUfree(description);
-cmsMLUfree(MfgDesc);
-cmsBool cmsMD5computeID(cmsHPROFILE hProfile);
-return 0;
 }
 
 
