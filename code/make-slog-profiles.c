@@ -283,6 +283,7 @@ for ( i = 0; i < 6; i++ ) {
                               extension, copyright, manufacturer);
     }
 
+
 /* ***** Make profile: S-Gamut, D65, gamma=1.00. */
 /* These primaries are those used for Sony's S-Gamut/S-Gamut3 colorspace.*/
 cmsCIExyYTRIPLE sgamut_primaries = {/*  */
@@ -292,7 +293,7 @@ cmsCIExyYTRIPLE sgamut_primaries = {/*  */
 };
 primaries = sgamut_primaries;
 whitepoint = d65_srgb_adobe_specs;
-media_whitepoint = d65_media_whitepoint;
+media_whitepoint = d65_media_whitepoint; //CHECKME:  May be completely bogus for S-Gamut, revisit this
 basename = "SGamut";
 manufacturer = "Sony";
 //ModelDesc = "";
@@ -309,7 +310,33 @@ for ( i = 0; i < 7; i++ ) {
 
     V4_profile = make_V4_profile (whitepoint, primaries, trc, basename, id, 
       extension, copyright, manufacturer);
-    }
+ }
+
+/* ***** Make profile: V-Gamut, D65, gamma=1.00. */
+/* These primaries are those used for Panasonic's V-Gamut colorspace.*/
+cmsCIExyYTRIPLE vgamut_primaries = {/*  */
+{0.73, 0.28, 1.0},
+{0.165, 0.840, 1.0},
+{0.1, -0.03, 1.0}
+};
+primaries = vgamut_primaries;
+whitepoint = d65_srgb_adobe_specs;
+media_whitepoint = d65_media_whitepoint; //CHECKME:  May be bogus for V-Gamut, dig deeper/check
+basename = "VGamut";
+manufacturer = "Panasonic";
+//ModelDesc = "";
+
+for ( i = 0; i < 5; i++ ) {
+    if (i==0) trc="-g10";
+    else if (i==1) trc="-srgbtrc";
+    else if (i==2) trc="-vloglegal";
+    else if (i==3) trc="-vlogdata";
+    else if (i==4) trc="-rec709";
+
+
+    V4_profile = make_V4_profile (whitepoint, primaries, trc, basename, id, 
+				  extension, copyright, manufacturer);
+ }
 
 /* ***** Make profile: S-Gamut, D65, gamma=1.00. */
 /* These primaries are those used for Sony's S-Gamut/S-Gamut3 colorspace.*/
@@ -320,7 +347,7 @@ cmsCIExyYTRIPLE sgamutcine_primaries = {/*  */
 };
 primaries = sgamutcine_primaries;
 whitepoint = d65_srgb_adobe_specs;
-media_whitepoint = d65_media_whitepoint;
+media_whitepoint = d65_media_whitepoint; //CHECKME:  May be bogus for S-Gamut3.cine, dig deeper/check
 basename = "SGamut3_cine";
 manufacturer = "Sony";
 //ModelDesc = "";
@@ -336,7 +363,7 @@ for ( i = 0; i < 7; i++ ) {
 
     V4_profile = make_V4_profile (whitepoint, primaries, trc, basename, id, 
       extension, copyright, manufacturer);
-    }
+ }
 
 /* ***** Make profile: Romm/Prophoto, D50, gamma=1.80 */
 /* Reference Input/Output Medium Metric RGB Color Encodings (RIMM/ROMM RGB)
@@ -778,6 +805,34 @@ static cmsToneCurve* make_tonecurve (char * trc)
 	  slog3_table[j] /= maxj;
       }
       tonecurve = cmsBuildTabulatedToneCurveFloat(NULL, 4096, slog3_table);
+  }
+
+  else if ((strcmp (trc, "-vloglegal") == 0) || (strcmp( trc, "-vlogdata") == 0)) {
+      cmsFloat32Number vlog_table[4096];
+      int j;
+      bool dataconv = false;
+      cmsFloat32Number j_scale = 4095.0;
+      cmsFloat32Number in;
+      cmsFloat32Number maxout = 1.0;
+      cmsFloat32Number vlog_cut2 = 0.181;
+      cmsFloat32Number vlog_b = 0.00873;
+      cmsFloat32Number vlog_c = 0.241514;
+      cmsFloat32Number vlog_d = 0.598206;
+      if(strcmp( trc, "-vlogdata") == 0)
+	  dataconv = true;
+      for(j = 4096; j >= 0; j--) {
+	  in = ((cmsFloat32Number) j)/4095.0;
+	  if(dataconv)
+	      in = in*(876.0/1023.0) + 64.0/1023.0;
+	  if(in < vlog_cut2)
+	      vlog_table[j] = (in - 0.125) / 5.6;
+	  else
+	      vlog_table[j] = powf(10.0, ((in - vlog_d)/ vlog_c)) - vlog_b;
+	  if(j == 4095)
+	      maxout = vlog_table[j];
+	  vlog_table[j] /= maxout;
+      }
+      tonecurve = cmsBuildTabulatedToneCurveFloat(NULL, 4096, vlog_table);
   }
 
   else if (strcmp( trc, "-labl") == 0) {
