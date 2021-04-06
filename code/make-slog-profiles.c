@@ -65,7 +65,7 @@ int i; /* for looping through the various TRCs */
 
 /* *****************Set up V2_profile variables and values *************** */
 cmsHPROFILE V4_profile;
-cmsCIEXYZ media_whitepoint;
+
 cmsCIEXYZ media_blackpoint = {0.0, 0.0, 0.0};
 cmsCIExyY whitepoint;
 cmsCIExyYTRIPLE primaries;
@@ -81,15 +81,15 @@ char *id="-elle", *extension=".icc";
 
 /* D50 WHITE POINTS */
 cmsCIExyY d50_romm_spec= {0.3457, 0.3585, 1.0};
-cmsCIEXYZ d50_romm_spec_media_whitepoint = {0.964295676, 1.0, 0.825104603};
+
 /* http://photo-lovers.org/pdf/color/romm.pdf */
 cmsCIExyY d50_illuminant_specs = {0.345702915, 0.358538597, 1.0};
-cmsCIEXYZ d50_illuminant_specs_media_whitepoint = {0.964199999, 1.000000000, 0.824899998};
+
 /* calculated from D50 illuminant XYZ values in ICC specs */
 
 /* D65 WHITE POINTS */
 cmsCIExyY d65_srgb_adobe_specs = {0.3127, 0.3290, 1.0};
-cmsCIEXYZ d65_media_whitepoint = {0.95045471, 1.0, 1.08905029};
+
 /* calculated media whitepoint:  {0.950455927, 1.0, 1.089057751} */
 /* White point from the sRGB.icm and AdobeRGB1998 profile specs:
  * http://www.adobe.com/digitalimag/pdfs/AdobeRGB1998.pdf 
@@ -114,7 +114,7 @@ cmsCIEXYZ d65_media_whitepoint = {0.95045471, 1.0, 1.08905029};
 /* cmsCIExyY c_astm  = {0.310060511, 0.316149551, 1.0}; 
 see http://www.brucelindbloom.com/index.html?Eqn_ChromAdapt.html */
 cmsCIExyY e_astm  = {0.333333333, 0.333333333, 1.0};
-cmsCIEXYZ e_astm_media_whitepoint = {1.0, 1.0, 1.0};
+
 /* https://en.wikipedia.org/wiki/NTSC#Colorimetry
 cmsCIExyY c_cie= {0.310, 0.316};
 cmsCIExyY e_cie= {0.333, 0.333}; */
@@ -128,7 +128,7 @@ cmsCIExyY e_5454_robertson= {0.333608970, 0.348572909, 1.0}; */
  * ACEScg – A Working Space for CGI Render and Compositing
  */
 cmsCIExyY d60_aces= {0.32168, 0.33767, 1.0};
-cmsCIEXYZ d60_aces_media_whitepoint = {0.952646075, 1.0, 1.008825184};
+
 
 
 /* ********************** MAKE THE PROFILES ************************* */
@@ -150,7 +150,7 @@ cmsCIExyYTRIPLE aces_cg_primaries =
 };
 whitepoint = d60_aces;
 primaries = aces_cg_primaries;
-media_whitepoint = d60_aces_media_whitepoint;
+
 basename = "ACEScg";
 manufacturer = "ACEScg chromaticities from S-2014-004 v1.0.1, http://www.oscars.org/science-technology/aces/aces-documentation";
 //ModelDesc = "http://www.oscars.org/science-technology/aces/aces-documentation";
@@ -186,7 +186,7 @@ cmsCIExyYTRIPLE aces_primaries_prequantized =
 };
 whitepoint = d60_aces;
 primaries = aces_primaries_prequantized;
-media_whitepoint = d60_aces_media_whitepoint;
+
 basename = "ACES";
 manufacturer = "ACES chromaticities from TB-2014-004, http://www.oscars.org/science-technology/aces/aces-documentation";
 //ModelDesc = "http://www.oscars.org/science-technology/aces/aces-documentation";
@@ -242,7 +242,7 @@ cmsCIExyYTRIPLE allcolors_primaries =
 }; 
 whitepoint = d50_illuminant_specs;
 primaries = allcolors_primaries;
-media_whitepoint = d50_illuminant_specs_media_whitepoint;
+
 basename = "AllColorsRGB";
 manufacturer = "AllColorsRGB chromaticities from http://ninedegreesbelow.com/photography/lcms-make-icc-profiles.html#AllColorsRGB";
 //ModelDesc = "http://ninedegreesbelow.com/photography/lcms-make-icc-profiles.html#AllColorsRGB";
@@ -268,7 +268,7 @@ cmsCIExyYTRIPLE identity_primaries = {/*  */
 };
 whitepoint = d50_illuminant_specs;
 primaries = identity_primaries;
-media_whitepoint = d50_illuminant_specs_media_whitepoint;
+
 basename = "IdentityRGB";
 manufacturer = "A discussion of the Identity profile primaries can be found here: http://ninedegreesbelow.com/photography/xyz-rgb.html#ICC";
 //ModelDesc = "";
@@ -293,7 +293,7 @@ cmsCIExyYTRIPLE sgamut_primaries = {/*  */
 };
 primaries = sgamut_primaries;
 whitepoint = d65_srgb_adobe_specs;
-media_whitepoint = d65_media_whitepoint; //CHECKME:  May be completely bogus for S-Gamut, revisit this
+
 basename = "SGamut";
 manufacturer = "Sony";
 //ModelDesc = "";
@@ -321,7 +321,7 @@ cmsCIExyYTRIPLE vgamut_primaries = {/*  */
 };
 primaries = vgamut_primaries;
 whitepoint = d65_srgb_adobe_specs;
-media_whitepoint = d65_media_whitepoint; //CHECKME:  May be bogus for V-Gamut, dig deeper/check
+
 basename = "VGamut";
 manufacturer = "Panasonic";
 //ModelDesc = "";
@@ -347,7 +347,7 @@ cmsCIExyYTRIPLE sgamutcine_primaries = {/*  */
 };
 primaries = sgamutcine_primaries;
 whitepoint = d65_srgb_adobe_specs;
-media_whitepoint = d65_media_whitepoint; //CHECKME:  May be bogus for S-Gamut3.cine, dig deeper/check
+
 basename = "SGamut3_cine";
 manufacturer = "Sony";
 //ModelDesc = "";
@@ -387,7 +387,7 @@ cmsCIExyYTRIPLE romm_primaries = {
 };
 primaries = romm_primaries;
 whitepoint = d50_romm_spec;
-media_whitepoint = d50_romm_spec_media_whitepoint;
+
 basename = "LargeRGB";
 manufacturer = "LargeRGB chromaticities from Reference Input/Output Medium Metric RGB Color Encodings (RIMM/ROMM RGB), http://photo-lovers.org/pdf/color/romm.pdf";
 //ModelDesc = "";
@@ -417,7 +417,7 @@ cmsCIExyYTRIPLE widegamut_pascale_primaries = {
 };
 primaries = widegamut_pascale_primaries;
 whitepoint = d50_romm_spec;
-media_whitepoint = d50_romm_spec_media_whitepoint;
+
 basename = "WideRGB";
 manufacturer = "WideRGB chromaticities from Danny Pascale: A review of RGB color spaces, http://www.babelcolor.com/download/A%20review%20of%20RGB%20color%20spaces.pdf";
 //ModelDesc = "";
@@ -445,7 +445,7 @@ cmsCIExyYTRIPLE adobe_primaries_prequantized = {
 };
 primaries = adobe_primaries_prequantized;
 whitepoint = d65_srgb_adobe_specs;
-media_whitepoint = d65_media_whitepoint;
+
 basename = "ClayRGB";
 manufacturer = "ClayRGB chromaticities as given in Adobe RGB (1998) Color Image Encoding, Version 2005-05, https://www.adobe.com/digitalimag/pdfs/AdobeRGB1998.pdf";
 //ModelDesc = "";
@@ -486,7 +486,7 @@ cmsCIExyYTRIPLE rec2020_primaries_prequantized = {
 };
 primaries = rec2020_primaries_prequantized;
 whitepoint = d65_srgb_adobe_specs;
-media_whitepoint = d65_media_whitepoint;
+
 basename = "Rec2020";
 manufacturer = "Rec2020 chromaticities from https://www.itu.int/dms_pub/itu-r/opb/rep/R-REP-BT.2246-2-2012-PDF-E.pdf; https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.2020-2-201510-I!!PDF-E.pdf";
 //ModelDesc = "";
@@ -525,7 +525,7 @@ cmsCIExyYTRIPLE srgb_primaries_pre_quantized = {
 };
 primaries = srgb_primaries_pre_quantized;
 whitepoint = d65_srgb_adobe_specs;
-media_whitepoint = d65_media_whitepoint;
+
 basename = "sRGB";
 manufacturer = "sRGB chromaticities from A Standard Default Color Space for the Internet - sRGB, http://www.w3.org/Graphics/Color/sRGB; also see http://www.color.org/specification/ICC1v43_2010-12.pdf";
 //ModelDesc = "";
@@ -583,7 +583,7 @@ cmsCIExyYTRIPLE cie_primaries_ledtuning_prequantized = {
 };
 primaries = cie_primaries_ledtuning_prequantized;
 whitepoint = e_astm;
-media_whitepoint = e_astm_media_whitepoint;
+
 basename = "CIERGB";
 manufacturer = "A discussion of the CIERGB chromaticities can be found at http://ninedegreesbelow.com/photography/lcms-make-icc-profiles.html#CIERGB";
 //ModelDesc = "";
@@ -599,24 +599,6 @@ for ( i = 0; i < 6; i++ ) {
     }
 
 
-/* **************************** Make Gray ICC profiles ************** */
-whitepoint = d50_illuminant_specs;
-media_whitepoint = d50_illuminant_specs_media_whitepoint;
-basename = "Gray";
-for ( i = 0; i < 6; i++ ) 
-    {
-    if (i==0) trc="-g10";
-    else if (i==1) trc="-g18";
-    else if (i==2) trc="-g22";
-    else if (i==3) trc="-srgbtrc";
-    else if (i==4) trc="-labl";
-    else if (i==5) trc="-rec709";
-    make_gray_profile (whitepoint, trc, basename, id, extension, 
-                       copyright, media_whitepoint, media_blackpoint
-                       );
-    } 
-
-
 /* *********** Make LCMS built-in LAB and XYZ profiles ************** */
 whitepoint = d50_illuminant_specs;
 make_LAB_XYZ_profiles (whitepoint, copyright);
@@ -624,50 +606,6 @@ make_LAB_XYZ_profiles (whitepoint, copyright);
 
 /* make gcc happy by returning an integer from main() */
 return 0;
-}
-
-static void make_gray_profile (cmsCIExyY       whitepoint,
-                               char *          trc,
-                               char *          basename,
-                               char *          id,
-                               char *          extension,
-                               cmsMLU          *copyright,
-                               cmsCIEXYZ       media_whitepoint,
-                               cmsCIEXYZ       media_blackpoint
-                               )
-{
-cmsToneCurve *grayTRC, *tonecurve;
-tonecurve = make_tonecurve (trc);
-grayTRC= tonecurve;
-
-/* Make V4 gray profile */
-cmsHPROFILE profile = cmsCreateGrayProfile ( &whitepoint, grayTRC );
-cmsWriteTag(profile, cmsSigCopyrightTag, copyright);
-cmsWriteTag (profile, cmsSigMediaWhitePointTag, &media_whitepoint);
-char* profile_version="-V4";
-char *filename = make_file_name (basename, id, profile_version, trc, extension);
-
-char *description_text = filename + 12;
-cmsMLU *description;
-description = cmsMLUalloc(NULL, 1);
-cmsMLUsetASCII(description, "en", "US", description_text);
-cmsWriteTag(profile, cmsSigProfileDescriptionTag, description);
-
-cmsSaveProfileToFile(profile, filename);
-cmsMLUfree(description);
-
-/* Make V2 gray profile */
-profile_version="-V2";
-filename = make_file_name (basename, id, profile_version, trc, extension);
-cmsSetProfileVersion (profile, 2.2);
-cmsWriteTag (profile, cmsSigMediaBlackPointTag, &media_blackpoint);
-
-description_text = filename + 12;
-description = cmsMLUalloc(NULL, 1);
-cmsMLUsetASCII(description, "en", "US", description_text);
-
-cmsSaveProfileToFile(profile, filename);
-cmsMLUfree(description);
 }
 
 
