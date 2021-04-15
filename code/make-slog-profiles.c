@@ -330,7 +330,7 @@ for ( i = 0; i < 5; i++ ) {
     if (i==0) trc="-g10";
     else if (i==1) trc="-srgbtrc";
     else if (i==2) trc="-vloglegal";
-    else if (i==3) trc="-vlogdata";
+    else if (i==3) trc="-vlogs1h";
     else if (i==4) trc="-rec709";
 
 
@@ -745,30 +745,32 @@ static cmsToneCurve* make_tonecurve (char * trc)
       tonecurve = cmsBuildTabulatedToneCurveFloat(NULL, 4096, slog3_table);
   }
 
-  else if ((strcmp (trc, "-vloglegal") == 0) || (strcmp( trc, "-vlogdata") == 0)) {
+  else if ((strcmp( trc, "-vlogdata") == 0)
+	   || (strcmp( trc, "-vlogs1h") == 0)) {
       cmsFloat32Number vlog_table[4096];
       int j;
       bool dataconv = false;
       cmsFloat32Number j_scale = 4095.0;
       cmsFloat32Number in;
-      cmsFloat32Number maxout = 1.0;
+      cmsFloat32Number maxout = 46.085537;
+      cmsFloat32Number maxout_cam = 16.121132;
       cmsFloat32Number vlog_cut2 = 0.181;
       cmsFloat32Number vlog_b = 0.00873;
       cmsFloat32Number vlog_c = 0.241514;
       cmsFloat32Number vlog_d = 0.598206;
-      if(strcmp( trc, "-vlogdata") == 0)
-	  dataconv = true;
+      if(strcmp( trc, "-vlogs1h") == 0)
+	  maxout = maxout_cam;
       for(j = 4096; j >= 0; j--) {
 	  in = ((cmsFloat32Number) j)/4095.0;
-	  if(dataconv)
-	      in = in*(876.0/1023.0) + 64.0/1023.0;
 	  if(in < vlog_cut2)
 	      vlog_table[j] = (in - 0.125) / 5.6;
 	  else
 	      vlog_table[j] = powf(10.0, ((in - vlog_d)/ vlog_c)) - vlog_b;
-	  if(j == 4095)
-	      maxout = vlog_table[j];
 	  vlog_table[j] /= maxout;
+	  if(vlog_table[j] < 0)
+	      vlog_table[j] = 0;
+	  else if(vlog_table[j] > 1.0)
+	      vlog_table[j] = 1.0;
       }
       tonecurve = cmsBuildTabulatedToneCurveFloat(NULL, 4096, vlog_table);
   }
